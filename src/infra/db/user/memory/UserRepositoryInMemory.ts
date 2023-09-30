@@ -25,13 +25,15 @@ export class UserRepositoryInMemory implements IUserRepository {
     }
 
     async update(id: string, data: UpdateUserInput): Promise<UserOutput> {
-        const foundUser = this.findByID(id);
+        const foundUserIndex = this.users.findIndex((user) => user.id === id);
 
-        if (foundUser) {
-            Object.assign(foundUser, data);
+        if (foundUserIndex) {
+            this.users[foundUserIndex].name = data.name;
+            this.users[foundUserIndex].email = data.email;
+            this.users[foundUserIndex].phone = data.phone;
         }
 
-        return foundUser;
+        return this.users[foundUserIndex];
     }
 
     inactivate(id: string): void {
