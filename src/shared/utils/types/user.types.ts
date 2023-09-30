@@ -1,3 +1,5 @@
+import { IGetUsersDTO } from "src/domain/user/DTOs/IGetUsersDTO";
+
 export type UserOutput = {
     id?: string;
     username: string;
@@ -13,3 +15,5 @@ export type CreateUserInput = {
     email: string;
     phone?: string;
 };
+
+export type FindUsersParams = IGetUsersDTO | Array<IGetUsersDTO>;

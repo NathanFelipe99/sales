@@ -1,5 +1,5 @@
 import { User } from "src/domain/user/User";
-import { IUserRepository } from "src/domain/user/user.repository";
+import { IUserRepository } from "src/base/user.repository";
 import { CreateUserInput, UserOutput } from "src/shared/utils/types/user.types";
 
 export class CreateUserUseCase {
