@@ -1,16 +1,44 @@
 import { User } from "src/domain/user/User";
 import { IUserRepository } from "src/base/user.repository";
-import { UserOutput } from "src/shared/utils/types/user.types";
+import { UpdateUserInput, UserOutput } from "src/shared/utils/types/user.types";
+import { IGetUsersDTO } from "src/domain/user/DTOs/IGetUsersDTO";
 
 export class UserRepositoryInMemory implements IUserRepository {
     users: User[] = [];
-    
+
     async insert(userData: User): Promise<void> {
         this.users.push(userData);
-        console.log(this.users);
     }
 
     async findAll(): Promise<UserOutput[]> {
         return this.users;
+    }
+
+    async findByID(id: string): Promise<UserOutput> {
+        return this.users.find((user) => user.id === id);
+    }
+
+    async findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
+        return this.users.filter((user) => {
+            (user.id === data.id) || (user.username === data.username) || (user.name === data.name) || (user.email === data.email) || (user.phone === data.phone) || (user.isActive === data.isActive)
+        });
+    }
+
+    async update(id: string, data: UpdateUserInput): Promise<UserOutput> {
+        const foundUser = this.findByID(id);
+
+        if (foundUser) {
+            Object.assign(foundUser, data);
+        }
+
+        return foundUser;
+    }
+
+    inactivate(id: string): void {
+        const foundUserIndex = this.users.findIndex((user) => user.id === id);
+
+        if (foundUserIndex) {
+            this.users[foundUserIndex].isActive = false;
+        }
     }
 }

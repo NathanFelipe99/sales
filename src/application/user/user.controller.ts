@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserInput } from 'src/shared/utils/types/user.types';
 
@@ -8,7 +8,7 @@ export class UserController {
         private readonly userService: UserService
     ) { }
 
-    @Post()
+    @Post("create")
     async createUser(@Body() data: CreateUserInput) {
         return this.userService.createUser(data);
     }
@@ -16,5 +16,10 @@ export class UserController {
     @Get()
     async getAll() {
         return this.userService.findAll();
+    }
+
+    @Get(":id")
+    async getByID(@Param("id", ParseUUIDPipe) id: string) {
+        return this.userService.findByID(id);
     }
 }

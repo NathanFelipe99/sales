@@ -16,4 +16,10 @@ export type CreateUserInput = {
     phone?: string;
 };
 
+export type UpdateUserInput = {
+    name?: string;
+    email?: string;
+    phone?: string;
+}
+
 export type FindUsersParams = IGetUsersDTO | Array<IGetUsersDTO>;
