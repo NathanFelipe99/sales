@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserInput } from 'src/shared/utils/types/user.types';
+import { CreateUserInput, UpdateUserInput } from 'src/shared/utils/types/user.types';
+import { IGetUsersDTO } from 'src/domain/user/DTOs/IGetUsersDTO';
 
 @Controller('user')
 export class UserController {
@@ -8,7 +9,7 @@ export class UserController {
         private readonly userService: UserService
     ) { }
 
-    @Post("create")
+    @Post('create')
     async createUser(@Body() data: CreateUserInput) {
         return this.userService.createUser(data);
     }
@@ -18,8 +19,25 @@ export class UserController {
         return this.userService.findAll();
     }
 
-    @Get(":id")
-    async getByID(@Param("id", ParseUUIDPipe) id: string) {
+    @Get(':id')
+    async getByID(@Param('id', ParseUUIDPipe) id: string) {
         return this.userService.findByID(id);
+    }
+
+    @Get()
+    async filterByParams(
+        @Query() query: IGetUsersDTO
+    ) {
+        return await this.userService.findByParams(query);
+    }
+
+    @Put('update/:id')
+    async update(@Param('id', ParseUUIDPipe) id: string, @Body() data: UpdateUserInput) {
+        return await this.userService.update(id, data);
+    }
+
+    @Patch('inactivate/:id')
+    async inactivate(@Param('id', ParseUUIDPipe) id: string) {
+        return await this.userService.incativate(id);
     }
 }

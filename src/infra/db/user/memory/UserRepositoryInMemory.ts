@@ -15,25 +15,32 @@ export class UserRepositoryInMemory implements IUserRepository {
     }
 
     async findByID(id: string): Promise<UserOutput> {
-        return this.users.find((user) => user.id === id);
+        const foundUser = this.users.find((user) => user.id === id);
+        if (foundUser) {
+            return this.users.find((user) => user.id === id);
+        } else {
+            return [];
+        }
     }
 
     async findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
+        const { id, username, name, email, phone, isActive } = data;
         return this.users.filter((user) => {
-            (user.id === data.id) || (user.username === data.username) || (user.name === data.name) || (user.email === data.email) || (user.phone === data.phone) || (user.isActive === data.isActive)
+            (id && user.id === id) || (username && user.username === username) || (name && user.name === name) || (email && user.email === email) || (phone && user.phone === phone) || (isActive && user.isActive === isActive)
         });
     }
 
     async update(id: string, data: UpdateUserInput): Promise<UserOutput> {
         const foundUserIndex = this.users.findIndex((user) => user.id === id);
 
-        if (foundUserIndex) {
+        if (foundUserIndex >= 0) {
             this.users[foundUserIndex].name = data.name;
             this.users[foundUserIndex].email = data.email;
             this.users[foundUserIndex].phone = data.phone;
+            return this.users[foundUserIndex];
+        } else {
+            return [];
         }
-
-        return this.users[foundUserIndex];
     }
 
     inactivate(id: string): void {

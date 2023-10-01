@@ -6,7 +6,7 @@ export type UserOutput = {
     name: string;
     email: string;
     phone?: string;
-};
+} | [];
 
 export type CreateUserInput = {
     username: string;
