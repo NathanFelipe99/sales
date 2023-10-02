@@ -11,23 +11,21 @@ export class UserController {
 
     @Post('create')
     async createUser(@Body() data: CreateUserInput) {
-        return this.userService.createUser(data);
+        return await this.userService.createUser(data);
     }
 
     @Get()
     async getAll() {
-        return this.userService.findAll();
+        return await this.userService.findAll();
     }
 
     @Get(':id')
     async getByID(@Param('id', ParseUUIDPipe) id: string) {
-        return this.userService.findByID(id);
+        return await this.userService.findByID(id);
     }
 
     @Get()
-    async filterByParams(
-        @Query() query: IGetUsersDTO
-    ) {
+    async filterByParams(@Query() query: IGetUsersDTO) {
         return await this.userService.findByParams(query);
     }
 
