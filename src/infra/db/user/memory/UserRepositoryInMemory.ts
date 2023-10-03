@@ -25,8 +25,9 @@ export class UserRepositoryInMemory implements IUserRepository {
 
     async findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
         const { id, username, name, email, phone, isActive } = data;
+
         return this.users.filter((user) => {
-            (id && user.id === id) || (username && user.username === username) || (name && user.name === name) || (email && user.email === email) || (phone && user.phone === phone) || (isActive && user.isActive === isActive)
+            return ((!id || user.id === id) && (!username || user.username === username) && (!name || user.name === name) && (!email || user.email === email) && (!phone || user.phone === phone) && (!isActive || user.isActive === isActive));
         });
     }
 
@@ -46,7 +47,7 @@ export class UserRepositoryInMemory implements IUserRepository {
     inactivate(id: string): void {
         const foundUserIndex = this.users.findIndex((user) => user.id === id);
 
-        if (foundUserIndex) {
+        if (foundUserIndex >= 0) {
             this.users[foundUserIndex].isActive = false;
         }
     }
