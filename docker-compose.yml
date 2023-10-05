@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres:latest
+    container_name: nest-database
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=postgres
+      - POSTGRES_SCHEMA=sales-nest
+    volumes:
+      - pgdata:/data/postgres
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sales-nest
+    command: npm run start:dev
+    restart: always
+    ports:
+      - 3000:3000
+      - 8080:8080
+    links:
+      - database
+    depends_on:
+      - database
+
+volumes:
+  pgdata:
+    driver: local

@@ -19,7 +19,7 @@ import { AppErrorFilter } from './shared/errors/app-error.filter';
             password: process.env.DB_PASSWORD,
             port: Number(process.env.DB_PORT),
             schema: process.env.DB_SCHEMA,
-            synchronize: true,
+            synchronize: false,
             entities: [`${__dirname}/**/*.entity{.js,.ts}`]
         })
     ],

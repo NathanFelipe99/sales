@@ -1,9 +1,7 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Put, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserInput, UpdateUserInput } from 'src/shared/utils/types/user.types';
 import { IGetUsersDTO } from 'src/domain/user/DTOs/IGetUsersDTO';
-import { Request } from 'express';
-import { Path } from '@nestjs/config';
 
 @Controller('user')
 export class UserController {
