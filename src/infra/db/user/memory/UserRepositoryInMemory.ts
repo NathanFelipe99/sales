@@ -15,12 +15,7 @@ export class UserRepositoryInMemory implements IUserRepository {
     }
 
     async findByID(id: string): Promise<UserOutput> {
-        const foundUser = this.users.find((user) => user.id === id);
-        if (foundUser) {
-            return this.users.find((user) => user.id === id);
-        } else {
-            return [];
-        }
+        return this.users.find((user) => user.id === id);
     }
 
     async findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
@@ -38,9 +33,7 @@ export class UserRepositoryInMemory implements IUserRepository {
             this.users[foundUserIndex].name = data.name;
             this.users[foundUserIndex].email = data.email;
             this.users[foundUserIndex].phone = data.phone;
-            return this.users[foundUserIndex];
-        } else {
-            return [];
+            return this.findByID(id);
         }
     }
 

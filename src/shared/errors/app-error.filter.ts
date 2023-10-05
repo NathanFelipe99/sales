@@ -12,7 +12,6 @@ export class AppErrorFilter implements ExceptionFilter {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const { status, message } = exception;
-        console.log("test", status, message)
         response.status(status).json({
             status,
             message,

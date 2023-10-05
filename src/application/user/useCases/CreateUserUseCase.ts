@@ -12,7 +12,7 @@ export class CreateUserUseCase {
     async execute(data: CreateUserInput): Promise<UserOutput> {
         const { username, password, name, email, phone } = data;
         const usernameAlreadyExists = await this._userRepository.findByParams({ username });
-        const userEmailAlreadyExists = await this._userRepository.findByParams({ name });
+        const userEmailAlreadyExists = await this._userRepository.findByParams({ email });
 
         if (usernameAlreadyExists.length) throw new AppError("Username already in use!", 400);
 
