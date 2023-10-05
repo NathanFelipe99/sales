@@ -11,24 +11,53 @@ export class UserRepository implements IUserRepository {
         @InjectRepository(User)
         private readonly userRepository: Repository<User>
     ) { }
-    findByID(id: string): Promise<UserOutput> {
-        throw new Error("Method not implemented.");
+
+    async findByID(id: string): Promise<UserOutput> {
+        return await this.userRepository.findOne({ where: { id } });
     }
-    findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
-        throw new Error("Method not implemented.");
+
+    async findByParams(data: IGetUsersDTO): Promise<UserOutput[]> {
+        const { username, name, email, phone, isActive } = data;
+        return await this.userRepository.findBy([
+            { username },
+            { name },
+            { email },
+            { phone },
+            { isActive }
+        ]);
     }
-    update(id: string, data: UpdateUserInput): Promise<UserOutput> {
-        throw new Error("Method not implemented.");
+
+    async update(id: string, data: UpdateUserInput): Promise<UserOutput> {
+        await this.userRepository
+            .createQueryBuilder()
+            .update()
+            .set({
+                ...data
+            })
+            .where("id = :id", { id })
+            .execute();
+
+        return this.userRepository.findOne({ where: { id } });
     }
-    inactivate(id: string): void {
-        throw new Error("Method not implemented.");
+
+    async inactivate(id: string): Promise<void> {
+        await this.userRepository
+            .createQueryBuilder()
+            .update()
+            .set({
+                isActive: false
+            })
+            .where("id = :id", { id })
+            .execute();
     }
-    
-    insert(props: CreateUserInput): Promise<void> {
-        throw new Error("Method not implemented.");
+
+    async insert(props: CreateUserInput): Promise<void> {
+        const user = this.userRepository.create({ ...props });
+        await this.userRepository.save(user);
     }
-    findAll(): Promise<UserOutput[]> {
-        throw new Error("Method not implemented.");
+
+    async findAll(): Promise<UserOutput[]> {
+        return await this.userRepository.find();
     }
 
 }
