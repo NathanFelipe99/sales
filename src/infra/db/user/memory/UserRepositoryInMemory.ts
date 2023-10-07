@@ -1,10 +1,12 @@
-import { User } from "src/domain/user/User";
+import { User } from "src/domain/user/user.entity";
 import { IUserRepository } from "src/base/user.repository";
 import { UpdateUserInput, UserOutput } from "src/shared/utils/types/user.types";
 import { IGetUsersDTO } from "src/domain/user/DTOs/IGetUsersDTO";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UserRepositoryInMemory implements IUserRepository {
-    users: User[] = [];
+    private users: User[] = [];
 
     async insert(userData: User): Promise<void> {
         this.users.push(userData);

@@ -1,13 +1,18 @@
-import { User } from "src/domain/user/User";
+import { User } from "src/domain/user/user.entity";
 import { IUserRepository } from "src/base/user.repository";
 import { CreateUserInput, UserOutput } from "src/shared/utils/types/user.types";
 import { hash } from "bcrypt";
 import { AppError } from "src/shared/errors/AppError";
+import {  Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserRepository } from "src/infra/db/user/typeorm/UserRepository";
 
+@Injectable()
 export class CreateUserUseCase {
     constructor(
+        @InjectRepository(UserRepository)
         private readonly _userRepository: IUserRepository
-    ) { }
+    ) {}
 
     async execute(data: CreateUserInput): Promise<UserOutput> {
         const { username, password, name, email, phone } = data;

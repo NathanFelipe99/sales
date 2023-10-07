@@ -1,22 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { hash } from 'bcrypt';
 import { CreateUserInput, UpdateUserInput, UserOutput } from 'src/shared/utils/types/user.types';
 import { CreateUserUseCase } from './useCases/CreateUserUseCase';
 import { IUserRepository } from 'src/base/user.repository';
-import { UserRepositoryInMemory } from 'src/infra/db/user/memory/UserRepositoryInMemory';
 import { ListAllUserUseCase } from './useCases/ListAllUserUseCase';
 import { FilterByIDUseCase } from './useCases/FilterByIDUseCase';
 import { IGetUsersDTO } from 'src/domain/user/DTOs/IGetUsersDTO';
 import { FilterUserByParamsUseCase } from './useCases/FilterUserByParamsUseCase';
 import { UpdateUserUseCase } from './useCases/UpdateUserUseCase';
 import { InactivateUserUseCase } from './useCases/InactivateUserUseCase';
+import { UserRepository } from 'src/infra/db/user/typeorm/UserRepository';
 
 @Injectable()
 export class UserService {
-    private readonly _userRepository: IUserRepository;
-    constructor() {
-        this._userRepository = new UserRepositoryInMemory();
-    }
+    constructor(@Inject(UserRepository) private readonly _userRepository: IUserRepository) {}
 
     async createUser(data: CreateUserInput): Promise<UserOutput> {
         const createUserUseCase = new CreateUserUseCase(this._userRepository);

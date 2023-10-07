@@ -16,7 +16,7 @@ export class User {
     @Column({ name: "email", unique: true, length: 60 })
     email: string;
 
-    @Column({ name: "password" })
+    @Column({ name: "password", default: "" })
     password: string;
 
     @Column({ name: "phone", length: 11 })
@@ -31,17 +31,21 @@ export class User {
     @Column({ name: "isActive", default: true })
     isActive: boolean;
 
-    constructor(props: CreateUserInput) {
+    constructor(props?: CreateUserInput) {
         if (!this.id) {
             this.id = uuidV4();
             this.createdAt = new Date();
             this.isActive = true;
         }
 
-        this.username = props.username;
-        this.name = props.name;
-        this.email = props.email;
-        this.phone = props.phone;
+        if (props && Object.keys(props)["length"]) {
+            this.username = props.username;
+            this.name = props.name;
+            this.password = props.password;
+            this.email = props.email;
+            this.phone = props.phone;
+        }
+
     }
 
     toJSON() {
