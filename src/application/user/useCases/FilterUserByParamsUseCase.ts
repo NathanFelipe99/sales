@@ -8,7 +8,6 @@ export class FilterUserByParamsUseCase {
     ) { }
 
     async execute(data: IGetUsersDTO): Promise<UserOutput[]> {
-        console.log(data);
-        return this._userRepository.findByParams(data);
+        return await this._userRepository.findByParams(data);
     }
 }

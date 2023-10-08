@@ -12,7 +12,7 @@ export class UpdateUserUseCase {
         const userExists = await this._userRepository.findByID(id),
             emailAlreadyExists = await this._userRepository.findByParams({ email });
 
-        if (!userExists) throw new AppError("User not found!", 400);
+        if (!userExists) throw new AppError("This ID doesn't match any user!", 400);
         if (emailAlreadyExists.length && (email !== userExists.email)) throw new AppError("Email already in use!", 400);
 
         return this._userRepository.update(id, { name, email, phone });

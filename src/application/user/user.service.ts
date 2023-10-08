@@ -10,6 +10,9 @@ import { FilterUserByParamsUseCase } from './useCases/FilterUserByParamsUseCase'
 import { UpdateUserUseCase } from './useCases/UpdateUserUseCase';
 import { InactivateUserUseCase } from './useCases/InactivateUserUseCase';
 import { UserRepository } from 'src/infra/db/user/typeorm/UserRepository';
+import { IAuthOutput } from './../auth/DTOs/IAuthOutput';
+import { FindUserToLoginUseCase } from './useCases/FindUserToLoginUseCase';
+import { IAuthInput } from '../auth/DTOs/IAuthInput';
 
 @Injectable()
 export class UserService {
@@ -50,5 +53,10 @@ export class UserService {
     async incativate(id: string): Promise<void> {
         const inactivateUserUseCase = new InactivateUserUseCase(this._userRepository);
         return await inactivateUserUseCase.execute(id);
+    }
+
+    async findUserCredentials(data: IAuthInput): Promise<IAuthOutput> {
+        const findUserToLoginUseCase = new FindUserToLoginUseCase(this._userRepository);
+        return await findUserToLoginUseCase.execute(data);
     }
 }

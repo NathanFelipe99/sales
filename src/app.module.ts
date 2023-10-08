@@ -4,6 +4,7 @@ import { UserModule } from './application/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { AppErrorFilter } from './shared/errors/app-error.filter';
+import { AuthModule } from './application/auth/auth.module';
 
 @Module({
     imports: [
@@ -11,6 +12,7 @@ import { AppErrorFilter } from './shared/errors/app-error.filter';
             envFilePath: ".env.development.local"
         }),
         UserModule,
+        AuthModule,
         TypeOrmModule.forRoot({
             type: "postgres",
             database: process.env.DB_DATABASE,
@@ -24,9 +26,11 @@ import { AppErrorFilter } from './shared/errors/app-error.filter';
         })
     ],
     controllers: [],
-    providers: [{
-        provide: APP_FILTER,
-        useClass: AppErrorFilter
-    }],
+    providers: [
+        {
+            provide: APP_FILTER,
+            useClass: AppErrorFilter
+        }
+    ],
 })
 export class AppModule { }

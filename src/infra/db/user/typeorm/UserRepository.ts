@@ -5,6 +5,8 @@ import { CreateUserInput, UpdateUserInput, UserOutput } from "src/shared/utils/t
 import { Repository } from "typeorm";
 import { IGetUsersDTO } from "src/domain/user/DTOs/IGetUsersDTO";
 import { Injectable } from "@nestjs/common";
+import { IAuthOutput } from "src/application/auth/DTOs/IAuthOutput";
+
 
 @Injectable()
 export class UserRepository implements IUserRepository {
@@ -62,4 +64,7 @@ export class UserRepository implements IUserRepository {
         return await this.userRepository.find();
     }
 
+    async getUserCredentials(username: string): Promise<IAuthOutput> {
+        return await this.userRepository.findOne({ where: { username, isActive: true }, select: { username: true, password: true } });
+    }
 }

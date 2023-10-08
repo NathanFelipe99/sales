@@ -23,7 +23,7 @@ export class CreateUserUseCase {
 
         if (userEmailAlreadyExists.length) throw new AppError("Email already in use!", 400);
 
-        const hashPassword = await hash(password, 8);
+        const hashPassword = await hash(password, 10);
         const user = new User({
             username,
             password: hashPassword,
