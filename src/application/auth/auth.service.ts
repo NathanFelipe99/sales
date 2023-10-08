@@ -21,10 +21,10 @@ export class AuthService {
             access_token: this.jwtService.sign(
                 { username: payload.username },
                 {
-                    secret: 'a23xyz',
+                    secret: process.env.JWT_SECRET,
                     expiresIn: '1h',
                 },
-            ),
+            )
         };
     }
 }
